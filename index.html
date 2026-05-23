@@ -227,13 +227,11 @@ function updateRefreshTime(){
     var y=d.getFullYear(),mo=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0');
     document.getElementById('lastUpdate').textContent='최근 새로고침: '+y+'.'+mo+'.'+da+' '+hh+':'+mm; } catch(e){}
 }
-function loadAllNotices(){ renderNotices(notices); updateRefreshTime(); document.getElementById('dateFrom').value=''; document.getElementById('dateTo').value=''; }
-function filterByPeriod(days){
-    if (days==='all'){ loadAllNotices(); return; }
-    var to=new Date(),from=new Date(); from.setDate(from.getDate()-parseInt(days,10));
-    function fmt(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-    document.getElementById('dateFrom').value=fmt(from); document.getElementById('dateTo').value=fmt(to);
-    runDateSearch();
+function loadAllNotices(){ 
+    // 24시간 확인 로직을 거친 최신 뉴스 데이터를 가져옴
+    var list = getNotices(); 
+    renderNotices(list); 
+    updateRefreshTime(); 
 }
 function runDateSearch(){
     var fromVal=document.getElementById('dateFrom').value, toVal=document.getElementById('dateTo').value;
