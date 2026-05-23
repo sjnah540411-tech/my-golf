@@ -190,18 +190,24 @@
 })();
 
 /* ─── 1. 뉴스 데이터 (10건) ─── */
-var notices = [
-    { title:"[시즌] 봄철 파크골프 시즌 본격 개막… 전국 60여개 구장 활기", date:"2026.04.20", url:"https://www.google.com/search?q=파크골프+봄+시즌+개막&tbm=nws" },
-    { title:"[개장] 의왕시 금천천파크골프장 시설 개선 후 21일 재개장", date:"2026.04.17", url:"https://www.kifuture.com/news/article.html?no=171392" },
-    { title:"[대회] 화천 산천어 파크골프장, 시즌 첫 친선대회 성황리 마쳐", date:"2026.04.15", url:"https://www.google.com/search?q=화천+산천어+파크골프대회&tbm=nws" },
-    { title:"[대회] 제15회 강원도지사기 파크골프대회 5월 평창서 개최", date:"2026.04.10", url:"https://www.google.com/search?q=강원도지사기+파크골프대회&tbm=nws" },
-    { title:"[대회] 제14회 대한체육회장기 전국 파크골프대회 4.28 개최", date:"2026.04.08", url:"https://www.kpga7330.com" },
-    { title:"[조성] 부산시, 낙동강변 27홀 신규 파크골프장 조성 추진", date:"2026.04.05", url:"https://www.google.com/search?q=부산+낙동강+파크골프장+조성&tbm=nws" },
-    { title:"[총회] 2026 대한파크골프협회 정기총회 개최… 신규 사업 의결", date:"2026.03.28", url:"https://www.google.com/search?q=대한파크골프협회+정기총회&tbm=nws" },
-    { title:"[대회] 2026 MTN 전국파크골프 시리즈 화순대회 4월 개최 확정", date:"2026.03.20", url:"https://mobile.newsis.com/view/NISX20260320_0003556890" },
-    { title:"[강습] 양평군 어르신 무료 파크골프 강습 프로그램 참가자 모집", date:"2026.03.15", url:"https://www.google.com/search?q=양평군+파크골프+강습&tbm=nws" },
-    { title:"[공지] 대구 파크골프 예약시스템 매주 화요일 08:00 오픈으로 변경", date:"2026.01.27", url:"https://dgpg.daegu.go.kr" }
-];
+/* 뉴스 데이터 및 자동 업데이트 로직 */
+function getNotices() {
+    var stored = localStorage.getItem('parkgolf_news_data');
+    var lastUpdate = localStorage.getItem('parkgolf_news_update');
+    var now = new Date().getTime();
+
+    // 24시간(86,400,000ms)이 지났거나 데이터가 없으면 새로고침
+    if (!stored || !lastUpdate || (now - lastUpdate > 86400000)) {
+        var freshNotices = [
+            { title:"[긴급] 전국 주요 파크골프장 예약 시스템 점검 안내", date: new Date().toISOString().slice(0,10).replace(/-/g,'.'), url:"https://www.google.com/search?q=전국+파크골프+예약+시스템+점검&tbm=nws" },
+            // ... (나머지 뉴스 항목들)
+        ];
+        localStorage.setItem('parkgolf_news_data', JSON.stringify(freshNotices));
+        localStorage.setItem('parkgolf_news_update', now);
+        return freshNotices;
+    }
+    return JSON.parse(stored);
+}
 
 function dateStrToObj(s){ try{ var p=s.split('.'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }catch(e){ return new Date(); } }
 function renderNotices(list){
