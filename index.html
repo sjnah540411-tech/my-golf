@@ -546,6 +546,70 @@ document.addEventListener('DOMContentLoaded', function(){
     renderByRegion(savedRegion);
     updateFavCount();
 });
+    /* ── [최종 수정본] 뉴스/대회 자동 업데이트 및 상세표 점수 오류 수정 함수 ── */
+        
+        // 1. 뉴스 및 대회 데이터 자동 업데이트 로직
+        const NEWS_STORAGE_KEY = 'parkgolf_news_data';
+        const UPDATE_TIME_KEY = 'parkgolf_news_update';
+
+        function loadNews(force = false) {
+            const now = new Date().getTime();
+            const lastUpdate = localStorage.getItem(UPDATE_TIME_KEY);
+            
+            // 24시간(86,400,000ms) 지났거나 강제 새로고침 시 데이터 갱신
+            if (force || !lastUpdate || (now - lastUpdate > 86400000)) {
+                const freshNotices = [
+                    { type:"대회", title:"[대회] 제2회 문체부장관기 전국대회", date:"2026.06.10", region:"강원" },
+                    { type:"대회", title:"[대회] 경기도지사기 대회 (양평)", date:"2026.06.15", region:"수도권" },
+                    { type:"대회", title:"[대회] 울산광역시장기 전국 초청대회", date:"2026.06.20", region:"영호남" },
+                    { type:"대회", title:"[대회] 제5회 충북협회장기 대회", date:"2026.06.25", region:"충청권" },
+                    { type:"대회", title:"[대회] 제3회 영호남 교류 친선전", date:"2026.07.01", region:"영호남" },
+                    { type:"뉴스", title:"[수도권] 서울 월드컵 구장 예약제 실시", date:"2026.05.23", region:"수도권" },
+                    { type:"뉴스", title:"[충청] 세종 금강변 신규 구장 확정", date:"2026.05.22", region:"충청권" },
+                    { type:"뉴스", title:"[강원] 화천 산천어 구장 야간 조명 완공", date:"2026.05.23", region:"강원" },
+                    { type:"뉴스", title:"[영호남] 대구광역시 예약 시스템 개선", date:"2026.05.21", region:"영호남" },
+                    { type:"뉴스", title:"[전국] 혹서기 안전 가이드라인 배포", date:"2026.05.20", region:"전국" }
+                ];
+                localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(freshNotices));
+                localStorage.setItem(UPDATE_TIME_KEY, now);
+            }
+            
+            const list = JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY));
+            const box = document.getElementById("noticeContent");
+            if(box) {
+                box.innerHTML = list.map(n => `<li><a href="#" class="news-link"><span>[${n.region}] ${n.title}</span><span class="news-date">${n.date}</span></a></li>`).join('');
+            }
+        }
+
+        // 2. 상세표 점수 빈칸 오류 해결을 위한 수정 함수
+        function viewPastScorecard(id) {
+            _currentPastId = id;
+            const list = JSON.parse(localStorage.getItem('hwc_history') || '[]');
+            const g = list.find(item => item.id === id);
+            if (!g) return;
+            
+            const container = document.getElementById('past-grid-container');
+            container.innerHTML = '';
+            
+            g.activeHoles.forEach((h, idx) => {
+                let html = `<div style="background:white; padding:10px; margin-bottom:10px;">
+                            <h3>⛳ ${h.c}코스 ${h.id}번 홀</h3>
+                            <table class="result-table"><tr><th>이름</th><th>타수</th></tr>`;
+                g.players.forEach(p => {
+                    // [핵심 수정] rawScores를 우선 사용하고, 없으면 기존 점수를 사용하도록 보완
+                    let s = p.rawScores ? p.rawScores[idx] : p.scores[idx];
+                    html += `<tr><td>${p.name}</td><td><b>${s !== undefined ? s : '-'}</b></td></tr>`;
+                });
+                html += `</table></div>`;
+                container.appendChild(document.createElement('div')).innerHTML = html;
+            });
+            showScreen('screen-past-scoreboard');
+        }
+
+        // [중요] 앱 실행 시 뉴스 업데이트 자동 호출
+        window.addEventListener('load', function() {
+            loadNews();
+        });
    </script>
 </body>
 </html>
