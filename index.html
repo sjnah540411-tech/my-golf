@@ -547,14 +547,6 @@ document.addEventListener('DOMContentLoaded', function(){
     renderByRegion(savedRegion);
     updateFavCount();
 });
-    function displayNotices() {
-    var noticeContent = document.getElementById("noticeContent"); // HTML에서 뉴스 목록이 들어갈 위치
-    if (!noticeContent) return;
-    
-    noticeContent.innerHTML = notices.map(function(n) {
-        return `<li><span>${n.title}</span> <small>(${n.date})</small></li>`;
-    }).join('');
-}
-</script>
+   </script>
 </body>
 </html>
