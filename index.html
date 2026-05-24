@@ -190,17 +190,20 @@
 })();
 
 /* ─── 1. 뉴스 데이터 (10건) ─── */
+/* ── [수정 위치] 아래 데이터를 복사하여 기존 notices 자리에 붙여넣으세요 ── */
 var notices = [
-    { title:"[시즌] 봄철 파크골프 시즌 본격 개막… 전국 60여개 구장 활기", date:"2026.04.20", url:"https://www.google.com/search?q=파크골프+봄+시즌+개막&tbm=nws" },
-    { title:"[개장] 의왕시 금천천파크골프장 시설 개선 후 21일 재개장", date:"2026.04.17", url:"https://www.kifuture.com/news/article.html?no=171392" },
-    { title:"[대회] 화천 산천어 파크골프장, 시즌 첫 친선대회 성황리 마쳐", date:"2026.04.15", url:"https://www.google.com/search?q=화천+산천어+파크골프대회&tbm=nws" },
-    { title:"[대회] 제15회 강원도지사기 파크골프대회 5월 평창서 개최", date:"2026.04.10", url:"https://www.google.com/search?q=강원도지사기+파크골프대회&tbm=nws" },
-    { title:"[대회] 제14회 대한체육회장기 전국 파크골프대회 4.28 개최", date:"2026.04.08", url:"https://www.kpga7330.com" },
-    { title:"[조성] 부산시, 낙동강변 27홀 신규 파크골프장 조성 추진", date:"2026.04.05", url:"https://www.google.com/search?q=부산+낙동강+파크골프장+조성&tbm=nws" },
-    { title:"[총회] 2026 대한파크골프협회 정기총회 개최… 신규 사업 의결", date:"2026.03.28", url:"https://www.google.com/search?q=대한파크골프협회+정기총회&tbm=nws" },
-    { title:"[대회] 2026 MTN 전국파크골프 시리즈 화순대회 4월 개최 확정", date:"2026.03.20", url:"https://mobile.newsis.com/view/NISX20260320_0003556890" },
-    { title:"[강습] 양평군 어르신 무료 파크골프 강습 프로그램 참가자 모집", date:"2026.03.15", url:"https://www.google.com/search?q=양평군+파크골프+강습&tbm=nws" },
-    { title:"[공지] 대구 파크골프 예약시스템 매주 화요일 08:00 오픈으로 변경", date:"2026.01.27", url:"https://dgpg.daegu.go.kr" }
+    // 대회 5개 (지역별 안분)
+    { title:"[대회] 제2회 문체부장관기 전국 파크골프대회", date:"2026.06.10", region:"강원", type:"대회" },
+    { title:"[대회] 경기도지사기 파크골프대회 (양평)", date:"2026.06.15", region:"수도권", type:"대회" },
+    { title:"[대회] 울산광역시장기 전국 초청대회", date:"2026.06.20", region:"영호남", type:"대회" },
+    { title:"[대회] 제5회 충북협회장기 파크골프대회", date:"2026.06.25", region:"충청권", type:"대회" },
+    { title:"[대회] 제3회 영호남 교류 파크골프 친선전", date:"2026.07.01", region:"영호남", type:"대회" },
+    // 뉴스 5개 (지역별 안분)
+    { title:"[수도권] 서울 월드컵 파크골프장 예약제 실시", date:"2026.05.23", region:"수도권", type:"뉴스" },
+    { title:"[충청] 세종시 금강변 신규 구장 조성안 확정", date:"2026.05.22", region:"충청권", type:"뉴스" },
+    { title:"[강원] 화천 산천어 파크골프장 야간 조명 완공", date:"2026.05.23", region:"강원", type:"뉴스" },
+    { title:"[영호남] 대구광역시, 예약 시스템 편의 개선", date:"2026.05.21", region:"영호남", type:"뉴스" },
+    { title:"[전국] 혹서기 파크골프장 안전 관리 지침", date:"2026.05.20", region:"전국", type:"뉴스" }
 ];
 
 function dateStrToObj(s){ try{ var p=s.split('.'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }catch(e){ return new Date(); } }
