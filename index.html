@@ -202,8 +202,7 @@ var notices = [
     { title:"[뉴스] 화천 산천어 구장 야간 조명 완공", date:"2026.05.23", region:"강원" },
     { title:"[뉴스] 대구광역시 예약 시스템 개선", date:"2026.05.21", region:"영호남" },
     { title:"[뉴스] 혹서기 안전 가이드라인 배포", date:"2026.05.20", region:"전국" }
-];
-function dateStrToObj(s){ try{ var p=s.split('.'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }catch(e){ return new Date(); } }
+];function dateStrToObj(s){ try{ var p=s.split('.'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }catch(e){ return new Date(); } }
 function renderNotices(list){
     var box=document.getElementById('noticeContent'); box.innerHTML='';
     if (!list || list.length===0){ box.innerHTML='<li class="news-empty">📭 해당 기간의 뉴스·공지가 없습니다.<br>기간을 다시 설정해 주세요.</li>'; return; }
